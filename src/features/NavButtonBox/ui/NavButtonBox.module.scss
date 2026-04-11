@@ -1,0 +1,23 @@
+.navItem {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.link {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 14px;
+}
+
+.buttonWrap {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 14px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.link:hover .buttonWrap {
+    transform: translateY(-1px);
+}
