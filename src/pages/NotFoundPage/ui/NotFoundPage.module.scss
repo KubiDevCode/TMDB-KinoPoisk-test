@@ -1,0 +1,37 @@
+.notFound {
+    min-height: calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.content {
+    max-width: 560px;
+    text-align: center;
+}
+
+.code {
+    margin: 0 0 12px;
+    font-size: 96px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.title {
+    margin: 0 0 12px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.text {
+    margin: 0 0 24px;
+    font-size: 18px;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+.link {
+    display: inline-block;
+}

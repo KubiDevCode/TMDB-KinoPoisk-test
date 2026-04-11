@@ -3,7 +3,7 @@ import s from './MovieCard.module.scss';
 export interface Movie {
     id: number;
     title: string;
-    posterUrl: string | null;
+    posterPath: string | null;
     vote_average?: number;
 }
 
@@ -15,7 +15,7 @@ type MovieCardProps = {
 const FALLBACK_IMAGE = 'https://placehold.co/300x450?text=No+Image';
 
 export const MovieCard = ({ movie, onClick }: MovieCardProps) => {
-    const posterUrl = movie.posterUrl || FALLBACK_IMAGE;
+    const posterUrl = movie.posterPath || FALLBACK_IMAGE;
 
     const rating =
         typeof movie.vote_average === 'number'
