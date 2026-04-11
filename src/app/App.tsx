@@ -1,14 +1,10 @@
-import { Header } from '../widgets/Header/ui/Header'
-import { MoviesCategoriesWidget } from '../widgets/MoviesCategoriesWidget/MoviesCategoriesWidget'
-import { Welcome } from '../widgets/Welcome/ui/Welcome'
+import AppRouter from './providers/routerProvider/ui/AppRouter'
 
 function App() {
 
   return (
     <div>
-      <Header />
-      <Welcome />
-      <MoviesCategoriesWidget />
+      <AppRouter />
     </div>
   )
 }

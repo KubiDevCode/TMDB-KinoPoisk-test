@@ -6,6 +6,11 @@
 }
 
 .section {
+  &Header {
+    display: flex;
+    justify-content: space-between;
+  }
+
   display: flex;
   flex-direction: column;
   gap: 16px;

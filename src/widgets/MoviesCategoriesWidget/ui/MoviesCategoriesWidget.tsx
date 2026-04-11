@@ -1,6 +1,8 @@
 import React from "react";
-import styles from "./MoviesCategoriesWidget.module.scss";
+import s from "./MoviesCategoriesWidget.module.scss";
 import classNames from "classnames";
+import { Button } from "../../../shared/ui/Button/Button";
+import { MovieCard } from "../../../entities/movie/index";
 
 // Рабочие заглушки постеров
 const categories = [
@@ -47,21 +49,17 @@ const categories = [
 
 export const MoviesCategoriesWidget = () => {
     return (
-        <div className={classNames(styles.widget, 'container')}>
+        <div className={classNames(s.widget, 'container')}>
             {categories.map((section) => (
-                <section key={section.category} className={styles.section}>
-                    <h2 className={styles.title}>{section.title}</h2>
+                <section key={section.category} className={s.section}>
+                    <div className={s.sectionHeader}>
+                        <h2 className={s.title}>{section.title}</h2>
+                        <Button variant="outlined">View More</Button>
+                    </div>
 
-                    <div className={styles.moviesGrid}>
+                    <div className={s.moviesGrid}>
                         {section.movies.map((movie) => (
-                            <div key={movie.id} className={styles.movieCard}>
-                                <img
-                                    src={movie.posterUrl}
-                                    alt={movie.title}
-                                    className={styles.poster}
-                                />
-                                <p className={styles.movieTitle}>{movie.title}</p>
-                            </div>
+                            <MovieCard movie={movie} />
                         ))}
                     </div>
                 </section>
