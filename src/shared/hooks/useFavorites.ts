@@ -1,33 +1,46 @@
-import type { MovieCardModel } from "../../entities/movie/model/types/movieTypes"
+import { useState } from "react";
+import type { MovieCardModel } from "../../entities/movie/model/types/movieTypes";
 
-export const getFavoritesFromStorage = (): number[] => {
-    const raw = window.localStorage.getItem('favorites');
+export const getFavoritesFromStorage = (): MovieCardModel[] => {
+    const raw = window.localStorage.getItem("favorites");
 
     if (!raw) {
         return [];
     }
 
-    return JSON.parse(raw) as number[];
+    try {
+        return JSON.parse(raw) as MovieCardModel[];
+    } catch {
+        return [];
+    }
 };
 
-export const toggleFavoritesFromStorage = (movie: MovieCardModel): number[] => {
-    const JSONraw = window.localStorage.getItem('favorites');
+export const toggleFavoritesFromStorage = (movie: MovieCardModel): MovieCardModel[] => {
+    const raw = getFavoritesFromStorage();
 
-    let raw: number[] = [];
+    const exists = raw.some((item) => item.id === movie.id);
 
-    if (JSONraw) {
-        try {
-            raw = JSON.parse(JSONraw) as number[];
-        } catch {
-            raw = [];
-        }
-    }
+    const updated = exists
+        ? raw.filter((item) => item.id !== movie.id)
+        : [...raw, { ...movie, favorites: true }];
 
-    const updated = raw.includes(movie.id)
-        ? raw.filter((id) => id !== movie.id)
-        : [...raw, movie.id];
-
-    window.localStorage.setItem('favorites', JSON.stringify(updated));
+    window.localStorage.setItem("favorites", JSON.stringify(updated));
 
     return updated;
 };
+
+
+
+export const useFavoritesFromStorage = () => {
+
+    const [favoriteMovies, setFavoriteMovies] = useState<MovieCardModel[]>(() => getFavoritesFromStorage());
+
+    const handleToggleFavorite = (movie: MovieCardModel) => {
+        const updated = toggleFavoritesFromStorage(movie);
+        setFavoriteMovies(updated);
+    };
+
+    return {
+        favoriteMovies, handleToggleFavorite
+    }
+}

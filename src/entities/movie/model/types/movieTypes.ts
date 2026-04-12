@@ -33,13 +33,14 @@ export type MoviesListResponseDto = {
     }
 }
 
-export type MovieCategory = 'popular' | 'top-rated' | 'upcoming' | 'now-playing'
+export type MovieCategory = 'popular' | 'top-rated' | 'upcoming' | 'now-playing' | 'favorites'
 
 export type MovieSectionTitle =
     | 'Popular Movies'
     | 'Top Rated Movies'
     | 'Upcoming Movies'
     | 'Now Playing Movies'
+    | 'Favorites Movies'
 
 export type MovieCardModel = {
     id: number

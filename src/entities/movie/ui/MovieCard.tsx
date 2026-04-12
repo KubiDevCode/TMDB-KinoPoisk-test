@@ -1,4 +1,3 @@
-import { toggleFavoritesFromStorage } from '../../../shared/hooks/useFavorites';
 import type { MovieCardModel } from '../model/types/movieTypes';
 import s from './MovieCard.module.scss';
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { mapMovieSection } from "../../../entities/movie/model/mappers/mappers";
-import type { MovieCardModel, MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
+import type { MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
 import {
     useGetNowPlayingMoviesQuery,
     useGetPopularMoviesQuery,
@@ -12,7 +12,7 @@ import { Footer } from "../../../widgets/Footer";
 import { Header } from "../../../widgets/Header";
 import { MoviesCategoriesWidget } from "../../../widgets/MoviesCategoriesWidget";
 import { Welcome } from "../../../widgets/Welcome";
-import { getFavoritesFromStorage, toggleFavoritesFromStorage } from "../../../shared/hooks/useFavorites";
+import { useFavoritesFromStorage } from "../../../shared/hooks/useFavorites";
 
 
 
@@ -25,12 +25,7 @@ export const MainPage = () => {
     const nowPlayingQuery = useGetNowPlayingMoviesQuery(1);
 
     const [randomMovieIndex, setRandomMovieIndex] = useState<number | null>(null);
-    const [favoriteIds, setFavoriteIds] = useState<number[]>(() => getFavoritesFromStorage())
-
-    const handleToggleFavorite = (movie: MovieCardModel) => {
-        const updated = toggleFavoritesFromStorage(movie);
-        setFavoriteIds(updated);
-    };
+    const { favoriteMovies, handleToggleFavorite } = useFavoritesFromStorage()
 
     useEffect(() => {
         const movies = popularQuery.data?.results;
@@ -50,30 +45,30 @@ export const MainPage = () => {
 
         if (popularQuery.data) {
             result.push(
-                mapMovieSection(popularQuery.data, "popular", "Popular Movies", favoriteIds),
+                mapMovieSection(popularQuery.data, "popular", "Popular Movies", favoriteMovies),
             );
         }
 
         if (topRatedQuery.data) {
             result.push(
-                mapMovieSection(topRatedQuery.data, "top-rated", "Top Rated Movies", favoriteIds),
+                mapMovieSection(topRatedQuery.data, "top-rated", "Top Rated Movies", favoriteMovies),
             );
         }
 
         if (upcomingQuery.data) {
             result.push(
-                mapMovieSection(upcomingQuery.data, "upcoming", "Upcoming Movies", favoriteIds),
+                mapMovieSection(upcomingQuery.data, "upcoming", "Upcoming Movies", favoriteMovies),
             );
         }
 
         if (nowPlayingQuery.data) {
             result.push(
-                mapMovieSection(nowPlayingQuery.data, "now-playing", "Now Playing Movies", favoriteIds),
+                mapMovieSection(nowPlayingQuery.data, "now-playing", "Now Playing Movies", favoriteMovies),
             );
         }
 
         return result;
-    }, [popularQuery.data, topRatedQuery.data, upcomingQuery.data, nowPlayingQuery.data, favoriteIds]);
+    }, [popularQuery.data, topRatedQuery.data, upcomingQuery.data, nowPlayingQuery.data, favoriteMovies]);
 
     const welcomeUrl = useMemo(() => {
         const movies = popularQuery.data?.results;

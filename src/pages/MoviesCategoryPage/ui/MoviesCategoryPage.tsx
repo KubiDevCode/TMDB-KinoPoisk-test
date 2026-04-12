@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { Pagination } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import s from './MoviesCategoryPage.module.scss';
 import { MovieCard } from '../../../entities/movie';
 import { mapMovieCard } from '../../../entities/movie/model/mappers/mappers';
@@ -9,10 +9,13 @@ import { useGetPopularMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMovi
 import { Header } from '../../../widgets/Header';
 import classNames from 'classnames';
 import { categoryPageList } from '../model/CategoryPageList';
+import { useFavoritesFromStorage } from '../../../shared/hooks/useFavorites';
 
 interface MoviesCategoryPageProps {
     className?: string;
 }
+
+
 
 const categoryTitleMap: Record<string, string> = {
     popular: 'Popular Movies',
@@ -24,6 +27,8 @@ const categoryTitleMap: Record<string, string> = {
 export const MoviesCategoryPage = ({ className }: MoviesCategoryPageProps) => {
     const { category } = useParams<{ category: string }>();
     const [page, setPage] = useState(1);
+
+    const { favoriteMovies, handleToggleFavorite } = useFavoritesFromStorage()
 
     const popularQuery = useGetPopularMoviesQuery(page, {
         skip: category !== 'popular',
@@ -40,6 +45,8 @@ export const MoviesCategoryPage = ({ className }: MoviesCategoryPageProps) => {
     const nowPlayingQuery = useGetNowPlayingMoviesQuery(page, {
         skip: category !== 'now-playing',
     });
+
+
 
     let currentQuery;
 
@@ -60,9 +67,10 @@ export const MoviesCategoryPage = ({ className }: MoviesCategoryPageProps) => {
             return <Navigate to="/movies/popular" replace />;
     }
 
-    const movies = useMemo(() => {
-        return currentQuery.data?.results?.map(mapMovieCard) ?? [];
-    }, [currentQuery.data]);
+
+    const movies = currentQuery.data?.results?.map((movie) =>
+        mapMovieCard(movie, favoriteMovies)
+    ) ?? [];
 
     const totalPages = currentQuery.data?.total_pages
         ? Math.min(currentQuery.data.total_pages, 500)
@@ -94,7 +102,7 @@ export const MoviesCategoryPage = ({ className }: MoviesCategoryPageProps) => {
                         <>
                             <div className={s.moviesGrid}>
                                 {movies.map((movie) => (
-                                    <MovieCard key={movie.id} movie={movie} />
+                                    <MovieCard key={movie.id} movie={movie} onToggleFavorite={handleToggleFavorite} />
                                 ))}
                             </div>
 

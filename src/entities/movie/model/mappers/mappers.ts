@@ -9,7 +9,10 @@ import type {
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 
-export const mapMovieCard = (movie: MovieDto, favoriteIds?: number[]): MovieCardModel => {
+export const mapMovieCard = (movie: MovieDto, favorites?: MovieCardModel[]): MovieCardModel => {
+
+    const favoriteIds = favorites?.map((favorite: MovieCardModel) => favorite.id)
+
     return {
         id: movie.id,
         title: movie.title,
@@ -25,7 +28,7 @@ export const mapMovieSection = (
     section: MoviesListResponseDto,
     category: MovieCategory,
     title: MovieSectionTitle,
-    favoriteIds: number[]
+    favoriteIds: MovieCardModel[]
 ): MovieSectionModel => {
     return {
         category,
