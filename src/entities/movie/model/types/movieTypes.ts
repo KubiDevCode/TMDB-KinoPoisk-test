@@ -33,7 +33,7 @@ export type MoviesListResponseDto = {
     }
 }
 
-export type MovieCategory = 'popular' | 'topRated' | 'upcoming' | 'nowPlaying'
+export type MovieCategory = 'popular' | 'top-rated' | 'upcoming' | 'now-playing'
 
 export type MovieSectionTitle =
     | 'Popular Movies'
@@ -46,6 +46,7 @@ export type MovieCardModel = {
     title: string
     voteAverage: number
     posterPath: string | null
+    favorites: boolean
 }
 
 export type MovieSectionModel = {

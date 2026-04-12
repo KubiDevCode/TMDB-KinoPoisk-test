@@ -7,8 +7,8 @@ import { mapMovieCard } from '../../../entities/movie/model/mappers/mappers';
 import { NavButtonBox } from '../../../features/NavButtonBox/ui/NavButtonBox';
 import { useGetPopularMoviesQuery, useGetTopRatedMoviesQuery, useGetUpcomingMoviesQuery, useGetNowPlayingMoviesQuery } from '../../../shared/api/tmdbApi';
 import { Header } from '../../../widgets/Header';
-import { categoryPageList } from '../model/categoryPageList';
 import classNames from 'classnames';
+import { categoryPageList } from '../model/CategoryPageList';
 
 interface MoviesCategoryPageProps {
     className?: string;
@@ -41,18 +41,24 @@ export const MoviesCategoryPage = ({ className }: MoviesCategoryPageProps) => {
         skip: category !== 'now-playing',
     });
 
-    if (!category || !categoryTitleMap[category]) {
-        return <Navigate to="/movies/popular" replace />;
-    }
+    let currentQuery;
 
-    const currentQuery =
-        category === 'popular'
-            ? popularQuery
-            : category === 'top-rated'
-                ? topRatedQuery
-                : category === 'upcoming'
-                    ? upcomingQuery
-                    : nowPlayingQuery;
+    switch (category) {
+        case 'popular':
+            currentQuery = popularQuery;
+            break;
+        case 'top-rated':
+            currentQuery = topRatedQuery;
+            break;
+        case 'upcoming':
+            currentQuery = upcomingQuery;
+            break;
+        case 'now-playing':
+            currentQuery = nowPlayingQuery;
+            break;
+        default:
+            return <Navigate to="/movies/popular" replace />;
+    }
 
     const movies = useMemo(() => {
         return currentQuery.data?.results?.map(mapMovieCard) ?? [];

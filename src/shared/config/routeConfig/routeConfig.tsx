@@ -1,9 +1,10 @@
 import type { RouteProps } from 'react-router-dom';
-import { MainPage } from '../../../pages/MainPage/ui/MainPage';
-import { NotFoundPage } from '../../../pages/NotFoundPage/ui/NotFoundPage';
-import { MoviesCategoryPage } from '../../../pages/MoviesCategoryPage/ui/MoviesCategoryPage';
-import { RoutePath } from './routePath';
 import type { AppRoute } from './routePath';
+import { MainPage } from '../../../pages/MainPage';
+import { NotFoundPage } from '../../../pages/NotFoundPage';
+import { MoviesCategoryPage } from '../../../pages/MoviesCategoryPage';
+import { RoutePath } from './routePath';
+import { FavoritesPage } from '../../../pages/FavoritesPage';
 
 export const routeConfig: Record<AppRoute, RouteProps> = {
     main: {
@@ -28,6 +29,6 @@ export const routeConfig: Record<AppRoute, RouteProps> = {
     },
     favorites: {
         path: RoutePath.favorites,
-        element: <div>любимые</div>,
+        element: <FavoritesPage />,
     },
 }

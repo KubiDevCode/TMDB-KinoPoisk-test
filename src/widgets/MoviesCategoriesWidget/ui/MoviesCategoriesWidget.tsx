@@ -2,22 +2,27 @@ import s from "./MoviesCategoriesWidget.module.scss";
 import classNames from "classnames";
 import { Button } from "../../../shared/ui/Button/Button";
 import { MovieCard } from "../../../entities/movie/index";
-import type { MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
+import type { MovieCardModel, MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
+import { useNavigate } from "react-router-dom";
 
 interface MoviesCategoriesWidgetProps {
-    sections?: MovieSectionModel[]
-    cardView?: number
+    sections?: MovieSectionModel[];
+    cardView?: number;
+    onToggleFavorite: (movie: MovieCardModel) => void;
 }
 
 export const MoviesCategoriesWidget = (props: MoviesCategoriesWidgetProps) => {
     const {
         sections,
         cardView = 7,
-    } = props
+        onToggleFavorite,
+    } = props;
 
-    // if (!sections) {
-    //     return null
-    // }
+    const navigate = useNavigate();
+
+    const handleViewMoreClick = (category: string) => () => {
+        navigate(`/movies/${category}`);
+    }
 
     return (
         <div className={classNames(s.widget, 'container')}>
@@ -25,12 +30,17 @@ export const MoviesCategoriesWidget = (props: MoviesCategoriesWidgetProps) => {
                 <section key={section.category} className={s.section}>
                     <div className={s.sectionHeader}>
                         <h2 className={s.title}>{section.title}</h2>
-                        <Button variant="outlined">View More</Button>
+                        <Button
+                            variant="outlined"
+                            onClick={handleViewMoreClick(section.category)}
+                        >
+                            View More
+                        </Button>
                     </div>
 
                     <div className={s.moviesGrid}>
                         {section.movies.slice(0, cardView).map((movie) => (
-                            <MovieCard key={movie.id} movie={movie} />
+                            <MovieCard key={movie.id} movie={movie} onToggleFavorite={onToggleFavorite} />
                         ))}
                     </div>
                 </section>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { mapMovieSection } from "../../../entities/movie/model/mappers/mappers";
-import type { MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
+import type { MovieCardModel, MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
 import {
     useGetNowPlayingMoviesQuery,
     useGetPopularMoviesQuery,
@@ -12,6 +12,7 @@ import { Footer } from "../../../widgets/Footer";
 import { Header } from "../../../widgets/Header";
 import { MoviesCategoriesWidget } from "../../../widgets/MoviesCategoriesWidget";
 import { Welcome } from "../../../widgets/Welcome";
+import { getFavoritesFromStorage, toggleFavoritesFromStorage } from "../../../shared/hooks/useFavorites";
 
 
 
@@ -24,6 +25,12 @@ export const MainPage = () => {
     const nowPlayingQuery = useGetNowPlayingMoviesQuery(1);
 
     const [randomMovieIndex, setRandomMovieIndex] = useState<number | null>(null);
+    const [favoriteIds, setFavoriteIds] = useState<number[]>(() => getFavoritesFromStorage())
+
+    const handleToggleFavorite = (movie: MovieCardModel) => {
+        const updated = toggleFavoritesFromStorage(movie);
+        setFavoriteIds(updated);
+    };
 
     useEffect(() => {
         const movies = popularQuery.data?.results;
@@ -43,35 +50,30 @@ export const MainPage = () => {
 
         if (popularQuery.data) {
             result.push(
-                mapMovieSection(popularQuery.data, "popular", "Popular Movies"),
+                mapMovieSection(popularQuery.data, "popular", "Popular Movies", favoriteIds),
             );
         }
 
         if (topRatedQuery.data) {
             result.push(
-                mapMovieSection(topRatedQuery.data, "topRated", "Top Rated Movies"),
+                mapMovieSection(topRatedQuery.data, "top-rated", "Top Rated Movies", favoriteIds),
             );
         }
 
         if (upcomingQuery.data) {
             result.push(
-                mapMovieSection(upcomingQuery.data, "upcoming", "Upcoming Movies"),
+                mapMovieSection(upcomingQuery.data, "upcoming", "Upcoming Movies", favoriteIds),
             );
         }
 
         if (nowPlayingQuery.data) {
             result.push(
-                mapMovieSection(nowPlayingQuery.data, "nowPlaying", "Now Playing Movies"),
+                mapMovieSection(nowPlayingQuery.data, "now-playing", "Now Playing Movies", favoriteIds),
             );
         }
 
         return result;
-    }, [
-        popularQuery.data,
-        topRatedQuery.data,
-        upcomingQuery.data,
-        nowPlayingQuery.data,
-    ]);
+    }, [popularQuery.data, topRatedQuery.data, upcomingQuery.data, nowPlayingQuery.data, favoriteIds]);
 
     const welcomeUrl = useMemo(() => {
         const movies = popularQuery.data?.results;
@@ -93,7 +95,7 @@ export const MainPage = () => {
         <>
             <Header />
             <Welcome backgroundUrl={welcomeUrl} />
-            <MoviesCategoriesWidget sections={sections} />
+            <MoviesCategoriesWidget sections={sections} onToggleFavorite={handleToggleFavorite} />
             <Footer />
         </>
     );
