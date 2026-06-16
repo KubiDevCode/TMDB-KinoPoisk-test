@@ -1,19 +1,18 @@
-import type { RouteProps } from 'react-router-dom';
-import type { AppRoute } from './routePath';
-import { MainPage } from '../../../pages/MainPage';
-import { NotFoundPage } from '../../../pages/NotFoundPage';
-import { MoviesCategoryPage } from '../../../pages/MoviesCategoryPage';
-import { RoutePath } from './routePath';
-import { FavoritesPage } from '../../../pages/FavoritesPage';
+import type { RouteProps } from 'react-router-dom'
+import { FavoritesPage } from '../../../pages/FavoritesPage'
+import { FilteredMoviesPage } from '../../../pages/FilteredMoviesPage'
+import { MainPage } from '../../../pages/MainPage'
+import { MoviesCategoryPage } from '../../../pages/MoviesCategoryPage'
+import { NotFoundPage } from '../../../pages/NotFoundPage'
+import { SearchPage } from '../../../pages/SearchPage'
+import { MovieDetailsPage } from '../../../pages/MovieDetailsPage'
+import type { AppRoute } from './routePath'
+import { RoutePath } from './routePath'
 
 export const routeConfig: Record<AppRoute, RouteProps> = {
     main: {
         path: RoutePath.main,
         element: <MainPage />,
-    },
-    not_found: {
-        path: RoutePath.not_found,
-        element: <NotFoundPage />,
     },
     movies_category: {
         path: RoutePath.movies_category,
@@ -21,14 +20,22 @@ export const routeConfig: Record<AppRoute, RouteProps> = {
     },
     filtered_movies: {
         path: RoutePath.filtered_movies,
-        element: <div>фильтры</div>,
+        element: <FilteredMoviesPage />,
     },
     search: {
         path: RoutePath.search,
-        element: <div>поиск</div>,
+        element: <SearchPage />,
     },
     favorites: {
         path: RoutePath.favorites,
         element: <FavoritesPage />,
+    },
+    movie_details: {
+        path: RoutePath.movie_details,
+        element: <MovieDetailsPage />,
+    },
+    not_found: {
+        path: RoutePath.not_found,
+        element: <NotFoundPage />,
     },
 }

@@ -1,97 +1,79 @@
-import { useEffect, useMemo, useState } from "react";
-
-import { mapMovieSection } from "../../../entities/movie/model/mappers/mappers";
-import type { MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
+import { useMemo } from 'react'
+import { mapMovieCard, mapMovieSection } from '../../../entities/movie/model/mappers/mappers'
+import type { MovieCardModel, MovieSectionModel } from '../../../entities/movie/model/types/movieTypes'
 import {
     useGetNowPlayingMoviesQuery,
     useGetPopularMoviesQuery,
     useGetTopRatedMoviesQuery,
     useGetUpcomingMoviesQuery,
-} from "../../../shared/api/tmdbApi";
-import { Footer } from "../../../widgets/Footer";
-import { Header } from "../../../widgets/Header";
-import { MoviesCategoriesWidget } from "../../../widgets/MoviesCategoriesWidget";
-import { Welcome } from "../../../widgets/Welcome";
-import { useFavoritesFromStorage } from "../../../shared/hooks/useFavorites";
+} from '../../../shared/api/tmdbApi'
+import { useFavoritesFromStorage } from '../../../shared/hooks/useFavorites'
+import { Footer } from '../../../widgets/Footer'
+import { Header } from '../../../widgets/Header'
+import { MoviesCategoriesWidget } from '../../../widgets/MoviesCategoriesWidget'
+import { Welcome } from '../../../widgets/Welcome'
 
-
-
-const IMAGE_BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/original";
+const welcomeSeed = crypto.getRandomValues(new Uint32Array(1))[0]
 
 export const MainPage = () => {
-    const popularQuery = useGetPopularMoviesQuery(1);
-    const topRatedQuery = useGetTopRatedMoviesQuery(1);
-    const upcomingQuery = useGetUpcomingMoviesQuery(1);
-    const nowPlayingQuery = useGetNowPlayingMoviesQuery(1);
-
-    const [randomMovieIndex, setRandomMovieIndex] = useState<number | null>(null);
+    const popularQuery = useGetPopularMoviesQuery(1)
+    const topRatedQuery = useGetTopRatedMoviesQuery(1)
+    const upcomingQuery = useGetUpcomingMoviesQuery(1)
+    const nowPlayingQuery = useGetNowPlayingMoviesQuery(1)
     const { favoriteMovies, handleToggleFavorite } = useFavoritesFromStorage()
 
-    useEffect(() => {
-        const movies = popularQuery.data?.results;
-
-        if (!movies?.length) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setRandomMovieIndex(null);
-            return;
-        }
-
-        const nextIndex = Math.floor(Math.random() * movies.length);
-        setRandomMovieIndex(nextIndex);
-    }, [popularQuery.data]);
-
     const sections: MovieSectionModel[] = useMemo(() => {
-        const result: MovieSectionModel[] = [];
+        const result: MovieSectionModel[] = []
 
         if (popularQuery.data) {
             result.push(
-                mapMovieSection(popularQuery.data, "popular", "Popular Movies", favoriteMovies),
-            );
+                mapMovieSection(popularQuery.data, 'popular', 'Popular Movies', favoriteMovies),
+            )
         }
 
         if (topRatedQuery.data) {
             result.push(
-                mapMovieSection(topRatedQuery.data, "top-rated", "Top Rated Movies", favoriteMovies),
-            );
+                mapMovieSection(topRatedQuery.data, 'top-rated', 'Top Rated Movies', favoriteMovies),
+            )
         }
 
         if (upcomingQuery.data) {
             result.push(
-                mapMovieSection(upcomingQuery.data, "upcoming", "Upcoming Movies", favoriteMovies),
-            );
+                mapMovieSection(upcomingQuery.data, 'upcoming', 'Upcoming Movies', favoriteMovies),
+            )
         }
 
         if (nowPlayingQuery.data) {
             result.push(
-                mapMovieSection(nowPlayingQuery.data, "now-playing", "Now Playing Movies", favoriteMovies),
-            );
+                mapMovieSection(nowPlayingQuery.data, 'now-playing', 'Now Playing Movies', favoriteMovies),
+            )
         }
 
-        return result;
-    }, [popularQuery.data, topRatedQuery.data, upcomingQuery.data, nowPlayingQuery.data, favoriteMovies]);
+        return result
+    }, [favoriteMovies, nowPlayingQuery.data, popularQuery.data, topRatedQuery.data, upcomingQuery.data])
 
-    const welcomeUrl = useMemo(() => {
-        const movies = popularQuery.data?.results;
+    const highlightedMovie: MovieCardModel | null = useMemo(() => {
+        const movies = popularQuery.data?.results ?? []
 
-        if (!movies?.length || randomMovieIndex === null) {
-            return "";
+        if (!movies.length) {
+            return null
         }
 
-        const randomMovie = movies[randomMovieIndex];
+        const candidates = movies.filter((movie) => movie.backdrop_path)
+        const highlighted = candidates[welcomeSeed % candidates.length] ?? movies[0]
 
-        if (!randomMovie?.backdrop_path) {
-            return "";
-        }
-
-        return `${IMAGE_BACKDROP_BASE_URL}${randomMovie.backdrop_path}`;
-    }, [popularQuery.data, randomMovieIndex]);
+        return highlighted ? mapMovieCard(highlighted) : null
+    }, [popularQuery.data?.results])
 
     return (
         <>
             <Header />
-            <Welcome backgroundUrl={welcomeUrl} />
-            <MoviesCategoriesWidget sections={sections} onToggleFavorite={handleToggleFavorite} />
+            <Welcome highlightedMovie={highlightedMovie} />
+            <MoviesCategoriesWidget
+                sections={sections}
+                onToggleFavorite={handleToggleFavorite}
+            />
             <Footer />
         </>
-    );
-};
+    )
+}

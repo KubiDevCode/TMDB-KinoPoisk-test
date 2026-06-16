@@ -1,35 +1,32 @@
-import { NavLink } from 'react-router-dom';
-import s from './NavButtonBox.module.scss';
-import { Button } from '../../../shared/ui/Button/Button';
+import { NavLink } from 'react-router-dom'
+import s from './NavButtonBox.module.scss'
 
-export interface NavButtonItem {
+export type NavButtonItem = {
     title: string
     path: string
 }
 
-interface NavButtonBoxProps {
+type NavButtonBoxProps = {
     buttonItem: NavButtonItem
+    variant?: 'dark' | 'light'
 }
 
-export const NavButtonBox = ({ buttonItem }: NavButtonBoxProps) => {
+export const NavButtonBox = ({ buttonItem, variant = 'dark' }: NavButtonBoxProps) => {
     return (
         <li className={s.navItem}>
             <NavLink
                 to={buttonItem.path}
-                className={s.link}
+                className={({ isActive }) => (
+                    [
+                        s.link,
+                        variant === 'light' ? s.light : s.dark,
+                        isActive ? s.active : '',
+                    ].join(' ')
+                )}
                 end={buttonItem.path === '/'}
             >
-                {({ isActive }) => (
-                    <span className={s.buttonWrap}>
-                        <Button
-                            variant={isActive ? 'contained' : 'outlined'}
-                            color="primary"
-                        >
-                            {buttonItem.title}
-                        </Button>
-                    </span>
-                )}
+                {buttonItem.title}
             </NavLink>
         </li>
-    );
-};
+    )
+}

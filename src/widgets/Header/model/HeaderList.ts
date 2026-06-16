@@ -3,15 +3,15 @@ import { RoutePath } from '../../../shared/config/routeConfig/routePath';
 
 export const headerList: NavButtonItem[] = [
     {
-        title: 'Main',
+        title: 'Home',
         path: RoutePath.main,
     },
     {
-        title: 'Category movies',
+        title: 'Categories',
         path: '/movies/popular'
     },
     {
-        title: 'Filtered movies',
+        title: 'Discover',
         path: RoutePath.filtered_movies
     },
     {

@@ -1,5 +1,12 @@
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .notFound {
-    min-height: calc(100vh - 160px);
+    min-height: 520px;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;

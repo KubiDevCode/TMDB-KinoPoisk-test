@@ -1,7 +1,7 @@
 import s from "./MoviesCategoriesWidget.module.scss";
 import classNames from "classnames";
 import { Button } from "../../../shared/ui/Button/Button";
-import { MovieCard } from "../../../entities/movie/index";
+import { MoviesGrid } from "../../../entities/movie/index";
 import type { MovieCardModel, MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,7 @@ interface MoviesCategoriesWidgetProps {
     sections?: MovieSectionModel[];
     cardView?: number;
     onToggleFavorite: (movie: MovieCardModel) => void;
+    hasButton?: boolean
 }
 
 export const MoviesCategoriesWidget = (props: MoviesCategoriesWidgetProps) => {
@@ -16,6 +17,7 @@ export const MoviesCategoriesWidget = (props: MoviesCategoriesWidgetProps) => {
         sections,
         cardView = 7,
         onToggleFavorite,
+        hasButton = true,
     } = props;
 
     const navigate = useNavigate();
@@ -30,19 +32,19 @@ export const MoviesCategoriesWidget = (props: MoviesCategoriesWidgetProps) => {
                 <section key={section.category} className={s.section}>
                     <div className={s.sectionHeader}>
                         <h2 className={s.title}>{section.title}</h2>
-                        <Button
+                        {hasButton ? <Button
                             variant="outlined"
                             onClick={handleViewMoreClick(section.category)}
                         >
                             View More
-                        </Button>
+                        </Button> : null}
                     </div>
 
-                    <div className={s.moviesGrid}>
-                        {section.movies.slice(0, cardView).map((movie) => (
-                            <MovieCard key={movie.id} movie={movie} onToggleFavorite={onToggleFavorite} />
-                        ))}
-                    </div>
+                    <MoviesGrid
+                        movies={section.movies.slice(0, cardView)}
+                        onToggleFavorite={onToggleFavorite}
+                        className={s.moviesGrid}
+                    />
                 </section>
             ))}
         </div>

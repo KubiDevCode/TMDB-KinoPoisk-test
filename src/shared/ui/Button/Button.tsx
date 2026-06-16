@@ -1,50 +1,40 @@
-import { Button as MButton } from '@mui/material'
-import type { ReactNode } from 'react'
-import type { SxProps, Theme } from '@mui/material/styles'
+import classNames from 'classnames'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import s from './Button.module.scss'
+
+type ButtonVariant = 'contained' | 'outlined' | 'text'
+type ButtonColor = 'primary' | 'secondary' | 'success' | 'error'
 
 type ButtonProps = {
     children: ReactNode
-    onClick?: () => void
-    variant?: 'contained' | 'outlined' | 'text'
-    color?: 'primary' | 'secondary' | 'success' | 'error'
+    variant?: ButtonVariant
+    color?: ButtonColor
     fullWidth?: boolean
-    disabled?: boolean
     className?: string
-    sx?: SxProps<Theme>
-    type?: 'button' | 'submit' | 'reset'
-}
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>
 
-export const Button = (props: ButtonProps) => {
-    const {
-        children,
-        onClick,
-        variant = 'contained',
-        color = 'primary',
-        fullWidth = false,
-        disabled = false,
-        className,
-        sx,
-        type = 'button',
-    } = props
-
+export const Button = ({
+    children,
+    variant = 'contained',
+    color = 'primary',
+    fullWidth = false,
+    className,
+    type = 'button',
+    ...restProps
+}: ButtonProps) => {
     return (
-        <MButton
+        <button
             type={type}
-            variant={variant}
-            color={color}
-            fullWidth={fullWidth}
-            disabled={disabled}
-            onClick={onClick}
-            className={className}
-            sx={{
-                borderRadius: '12px',
-                textTransform: 'none',
-                fontWeight: 600,
-                padding: '10px 20px',
-                ...sx,
-            }}
+            className={classNames(
+                s.button,
+                s[variant],
+                color !== 'primary' && s[color],
+                fullWidth && s.fullWidth,
+                className,
+            )}
+            {...restProps}
         >
             {children}
-        </MButton>
+        </button>
     )
 }

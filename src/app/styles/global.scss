@@ -1,4 +1,61 @@
-.container{
-    width: 1200px;
+.container {
+    width: min(100% - 32px, 1360px);
     margin-inline: auto;
+}
+
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.global-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 38%;
+    height: 3px;
+    background: linear-gradient(90deg, #01b4e4, #90cea1);
+    box-shadow: 0 0 12px rgba(1, 180, 228, 0.75);
+    animation: progress 1s ease-in-out infinite alternate;
+}
+
+.global-error {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100;
+    max-width: 420px;
+    border-radius: 8px;
+    background: #a61b1b;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 18px;
+}
+
+@keyframes progress {
+    from { transform: translateX(-40%); }
+    to { transform: translateX(260%); }
+}
+
+[data-theme='dark'] body {
+    background: #071521;
+    color: #e8f0f5;
+}
+
+[data-theme='dark'] .app-shell :is(main, section, article, div) {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .app-shell :is(h1, h2, h3, p, span, label) {
+    color: inherit;
+}
+
+@media (max-width: 640px) {
+    .container {
+        width: min(100% - 24px, 1360px);
+    }
 }

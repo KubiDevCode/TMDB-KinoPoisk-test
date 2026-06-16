@@ -1,3 +1,8 @@
+export type GenreDto = {
+    id: number
+    name: string
+}
+
 export type BaseMovieDto = {
     id: number
     title: string
@@ -7,7 +12,7 @@ export type BaseMovieDto = {
     overview: string
     vote_average: number
     vote_count: number
-    release_date: string
+    release_date?: string
 }
 
 export type MovieDto = BaseMovieDto & {
@@ -15,11 +20,26 @@ export type MovieDto = BaseMovieDto & {
 }
 
 export type MovieDetailsDto = BaseMovieDto & {
-    runtime: number
-    genres: Array<{
-        id: number
-        name: string
-    }>
+    runtime?: number
+    genres: GenreDto[]
+}
+
+export type MovieCreditDto = {
+    id: number
+    name: string
+    character?: string
+    job?: string
+    profile_path: string | null
+}
+
+export type MovieCreditsDto = {
+    id: number
+    cast: MovieCreditDto[]
+    crew: MovieCreditDto[]
+}
+
+export type GenresResponseDto = {
+    genres: GenreDto[]
 }
 
 export type MoviesListResponseDto = {
@@ -35,23 +55,27 @@ export type MoviesListResponseDto = {
 
 export type MovieCategory = 'popular' | 'top-rated' | 'upcoming' | 'now-playing' | 'favorites'
 
-export type MovieSectionTitle =
-    | 'Popular Movies'
-    | 'Top Rated Movies'
-    | 'Upcoming Movies'
-    | 'Now Playing Movies'
-    | 'Favorites Movies'
-
 export type MovieCardModel = {
     id: number
     title: string
     voteAverage: number
     posterPath: string | null
-    favorites: boolean
+    backdropPath: string | null
+    releaseYear: string
+    overview: string
+    isFavorite: boolean
 }
 
 export type MovieSectionModel = {
     category: MovieCategory
-    title: MovieSectionTitle
+    title: string
     movies: MovieCardModel[]
+}
+
+export type DiscoverMoviesParams = {
+    page?: number
+    sortBy?: string
+    genres?: number[]
+    voteAverageGte?: number
+    voteAverageLte?: number
 }

@@ -1,14 +1,22 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type { MoviesListResponseDto} from '../../entities/movie/model/types/movieTypes'
+import type {
+    DiscoverMoviesParams,
+    GenresResponseDto,
+    MovieCreditsDto,
+    MovieDetailsDto,
+    MoviesListResponseDto,
+} from '../../entities/movie/model/types/movieTypes'
+
+const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN
+const DEFAULT_LANGUAGE = 'en-US'
 
 export const tmdbApi = createApi({
     reducerPath: 'tmdbApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://api.themoviedb.org/3/',
         prepareHeaders: (headers) => {
-            const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MjMzZDU1NTY3NDFkYThmM2E1MzJhOTM0Y2RhNjJiNCIsIm5iZiI6MTc3NTc0Nzc4NS4xMDksInN1YiI6IjY5ZDdjMmM5MDkwNTczZGQ4OWQzYmJhMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.B6YZqDKxOQ0r6oZPO1i1lVXGPPWyeog1GdJKAn3uekA"
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`)
+            if (TMDB_ACCESS_TOKEN) {
+                headers.set('Authorization', `Bearer ${TMDB_ACCESS_TOKEN}`)
             }
 
             headers.set('Accept', 'application/json')
@@ -18,81 +26,94 @@ export const tmdbApi = createApi({
     }),
     endpoints: (builder) => ({
         getPopularMovies: builder.query<MoviesListResponseDto, number | void>({
-            query: (page = 1) => `movie/popular?language=en-en&page=${page}`,
+            query: (page = 1) => ({
+                url: 'movie/popular',
+                params: { language: DEFAULT_LANGUAGE, page },
+            }),
         }),
 
         getTopRatedMovies: builder.query<MoviesListResponseDto, number | void>({
-            query: (page = 1) => `movie/top_rated?language=en-en&page=${page}`,
+            query: (page = 1) => ({
+                url: 'movie/top_rated',
+                params: { language: DEFAULT_LANGUAGE, page },
+            }),
         }),
 
         getUpcomingMovies: builder.query<MoviesListResponseDto, number | void>({
-            query: (page = 1) => `movie/upcoming?language=en-en&page=${page}`,
+            query: (page = 1) => ({
+                url: 'movie/upcoming',
+                params: { language: DEFAULT_LANGUAGE, page },
+            }),
         }),
 
         getNowPlayingMovies: builder.query<MoviesListResponseDto, number | void>({
-            query: (page = 1) => `movie/now_playing?language=en-en&page=${page}`,
+            query: (page = 1) => ({
+                url: 'movie/now_playing',
+                params: { language: DEFAULT_LANGUAGE, page },
+            }),
         }),
 
-        searchMovies: builder.query<any, { query: string; page?: number }>({
-            query: ({ query, page = 1 }) =>
-                `search/movie?language=en-en&query=${encodeURIComponent(query)}&page=${page}`,
-        }),
-
-        getMovieDetails: builder.query<any, number | string>({
-            query: (id) => `movie/${id}?language=en-en`,
-        }),
-
-        getMovieCredits: builder.query<any, number | string>({
-            query: (id) => `movie/${id}/credits?language=en-en`,
-        }),
-
-        getSimilarMovies: builder.query<any, { id: number | string; page?: number }>({
-            query: ({ id, page = 1 }) =>
-                `movie/${id}/similar?language=en-en&page=${page}`,
-        }),
-
-        getGenres: builder.query<any, void>({
-            query: () => `genre/movie/list?language=en-en`,
-        }),
-
-        discoverMovies: builder.query<
-            any,
-            {
-                page?: number
-                sortBy?: string
-                genres?: number[]
-                voteAverageGte?: number
-                voteAverageLte?: number
-            }>
-            ({
-                query: ({
-                    page = 1,
-                    sortBy = 'popularity.desc',
-                    genres = [],
-                    voteAverageGte,
-                    voteAverageLte,
-                }) => {
-                    const params = new URLSearchParams()
-
-                    params.set('language', 'en-en')
-                    params.set('page', String(page))
-                    params.set('sort_by', sortBy)
-
-                    if (genres.length) {
-                        params.set('with_genres', genres.join(','))
-                    }
-
-                    if (voteAverageGte !== undefined) {
-                        params.set('vote_average.gte', String(voteAverageGte))
-                    }
-
-                    if (voteAverageLte !== undefined) {
-                        params.set('vote_average.lte', String(voteAverageLte))
-                    }
-
-                    return `discover/movie?${params.toString()}`
+        searchMovies: builder.query<MoviesListResponseDto, { query: string; page?: number }>({
+            query: ({ query, page = 1 }) => ({
+                url: 'search/movie',
+                params: {
+                    language: DEFAULT_LANGUAGE,
+                    query,
+                    page,
+                    include_adult: false,
                 },
             }),
+        }),
+
+        getMovieDetails: builder.query<MovieDetailsDto, number | string>({
+            query: (id) => ({
+                url: `movie/${id}`,
+                params: { language: DEFAULT_LANGUAGE },
+            }),
+        }),
+
+        getMovieCredits: builder.query<MovieCreditsDto, number | string>({
+            query: (id) => ({
+                url: `movie/${id}/credits`,
+                params: { language: DEFAULT_LANGUAGE },
+            }),
+        }),
+
+        getSimilarMovies: builder.query<MoviesListResponseDto, { id: number | string; page?: number }>({
+            query: ({ id, page = 1 }) => ({
+                url: `movie/${id}/similar`,
+                params: { language: DEFAULT_LANGUAGE, page },
+            }),
+        }),
+
+        getGenres: builder.query<GenresResponseDto, void>({
+            query: () => ({
+                url: 'genre/movie/list',
+                params: { language: DEFAULT_LANGUAGE },
+            }),
+        }),
+
+        discoverMovies: builder.query<MoviesListResponseDto, DiscoverMoviesParams | void>({
+            query: ({
+                page = 1,
+                sortBy = 'popularity.desc',
+                genres = [],
+                voteAverageGte,
+                voteAverageLte,
+            } = {}) => ({
+                url: 'discover/movie',
+                params: {
+                    language: DEFAULT_LANGUAGE,
+                    page,
+                    sort_by: sortBy,
+                    with_genres: genres.length ? genres.join(',') : undefined,
+                    'vote_average.gte': voteAverageGte,
+                    'vote_average.lte': voteAverageLte,
+                    include_adult: false,
+                    include_video: false,
+                },
+            }),
+        }),
     }),
 })
 

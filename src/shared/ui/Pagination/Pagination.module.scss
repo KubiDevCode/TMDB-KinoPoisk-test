@@ -1,0 +1,56 @@
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    display: inline-flex;
+    min-width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(3, 37, 65, 0.14);
+    border-radius: 8px;
+    background: #fff;
+    color: #032541;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 0 12px;
+}
+
+.button:hover:not(:disabled) {
+    border-color: #01b4e4;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.button:focus-visible {
+    outline: 3px solid rgba(1, 180, 228, 0.35);
+    outline-offset: 2px;
+}
+
+.active {
+    border-color: #01b4e4;
+    background: #01b4e4;
+    color: #fff;
+}
+
+.ellipsis {
+    min-width: 24px;
+    color: #536b7d;
+    font-weight: 900;
+    text-align: center;
+}
+
+.pageItem {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}

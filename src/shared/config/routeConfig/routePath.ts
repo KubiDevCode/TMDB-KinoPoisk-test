@@ -1,5 +1,5 @@
 
-export type AppRoute = 'main' | 'not_found' | 'movies_category' | 'filtered_movies' | 'search' | 'favorites';
+export type AppRoute = 'main' | 'not_found' | 'movies_category' | 'filtered_movies' | 'search' | 'favorites' | 'movie_details';
 
 export const RoutePath: Record<AppRoute, string> = {
     main: '/',
@@ -7,5 +7,6 @@ export const RoutePath: Record<AppRoute, string> = {
     movies_category: '/movies/:category',
     filtered_movies: '/filtered-movies',
     search: '/search',
-    favorites: '/favorites'
+    favorites: '/favorites',
+    movie_details: '/movie/:id',
 } as const;

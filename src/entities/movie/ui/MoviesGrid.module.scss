@@ -1,0 +1,25 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px;
+}
+
+.empty {
+    display: grid;
+    min-height: 260px;
+    place-items: center;
+    border: 1px solid rgba(3, 37, 65, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.72);
+    color: #536b7d;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+}
