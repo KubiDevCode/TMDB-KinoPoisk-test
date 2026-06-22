@@ -7,7 +7,7 @@ export const headerList: NavButtonItem[] = [
         path: RoutePath.main,
     },
     {
-        title: 'Categories',
+        title: 'Movies',
         path: '/movies/popular'
     },
     {

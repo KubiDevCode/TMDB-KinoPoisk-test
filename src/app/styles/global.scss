@@ -1,6 +1,101 @@
-.container {
-    width: min(100% - 32px, 1360px);
-    margin-inline: auto;
+@use 'helpers' as *;
+
+html {
+    &.is-lock {
+        overflow: hidden;
+    }
+}
+
+body {
+    @include fluid-text(18, 14);
+
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+    font-family: var(--font-family-base);
+    color: var(--color-gray-60);
+    background: var(--color-black-08);
+}
+
+main {
+    flex-grow: 1;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+    color: var(--color-white);
+}
+
+h1,
+.h1 {
+    @include fluid-text(58, 28);
+    font-weight: 700;
+}
+
+h2,
+.h2 {
+    @include fluid-text(48, 24);
+    font-weight: 700;
+}
+
+h3,
+.h3 {
+    @include fluid-text(38, 20);
+    font-weight: 700;
+}
+
+h4,
+.h4 {
+    @include fluid-text(24, 18);
+    font-weight: 600;
+}
+
+h5,
+.h5 {
+    @include fluid-text(22, 18);
+    font-weight: 500;
+}
+
+h6,
+.h6 {
+    @include fluid-text(20, 16);
+    font-weight: 600;
+}
+
+a,
+button,
+label,
+input,
+textarea,
+select,
+svg * {
+    transition-duration: var(--transition-duration);
+}
+
+a {
+    color: inherit;
+
+    @include hover {
+        color: var(--color-red-45);
+    }
+
+    &[class] {
+        text-decoration: none;
+    }
+}
+
+:focus-visible {
+    @include focus-visible;
 }
 
 .app-shell {
@@ -16,8 +111,8 @@
     z-index: 100;
     width: 38%;
     height: 3px;
-    background: linear-gradient(90deg, #01b4e4, #90cea1);
-    box-shadow: 0 0 12px rgba(1, 180, 228, 0.75);
+    background: linear-gradient(90deg, var(--color-red-45), var(--color-red-80));
+    box-shadow: 0 0 12px rgb(229 0 0 / 0.75);
     animation: progress 1s ease-in-out infinite alternate;
 }
 
@@ -27,10 +122,11 @@
     bottom: 20px;
     z-index: 100;
     max-width: 420px;
-    border-radius: 8px;
-    background: #a61b1b;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
-    color: #fff;
+    border: var(--border);
+    border-radius: var(--border-radius-s);
+    background: var(--color-red-45);
+    box-shadow: 0 14px 32px rgb(0 0 0 / 0.28);
+    color: var(--color-white);
     font-size: 14px;
     font-weight: 700;
     padding: 14px 18px;
@@ -39,23 +135,4 @@
 @keyframes progress {
     from { transform: translateX(-40%); }
     to { transform: translateX(260%); }
-}
-
-[data-theme='dark'] body {
-    background: #071521;
-    color: #e8f0f5;
-}
-
-[data-theme='dark'] .app-shell :is(main, section, article, div) {
-    border-color: rgba(255, 255, 255, 0.12);
-}
-
-[data-theme='dark'] .app-shell :is(h1, h2, h3, p, span, label) {
-    color: inherit;
-}
-
-@media (max-width: 640px) {
-    .container {
-        width: min(100% - 24px, 1360px);
-    }
 }

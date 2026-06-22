@@ -1,117 +1,112 @@
 .card {
     display: flex;
+    height: 100%;
     min-width: 0;
-    cursor: pointer;
     flex-direction: column;
-    gap: 10px;
-    color: inherit;
-    outline: none;
-}
+    row-gap: fluid(20, 12);
+    padding: fluid(20, 12);
+    background-color: var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-l);
+    cursor: pointer;
+    transition:
+        border-color var(--transition-duration),
+        translate var(--transition-duration);
 
-.card:focus-visible .imageWrapper {
-    box-shadow: 0 0 0 3px rgba(1, 180, 228, 0.35);
+    @include laptop {
+        border-radius: var(--border-radius-m);
+    }
+
+    @include hover {
+        border-color: var(--color-white);
+        translate: 0 -2px;
+    }
 }
 
 .imageWrapper {
     position: relative;
-    width: 100%;
     aspect-ratio: 2 / 3;
+    flex: 0 0 auto;
     overflow: hidden;
-    border-radius: 8px;
-    background: #dfe7ee;
-    box-shadow: 0 12px 28px rgba(4, 19, 35, 0.16);
+    border-radius: inherit;
+    background-color: var(--color-black-08);
 }
 
 .image {
-    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.24s ease;
-}
-
-.card:hover .image {
-    transform: scale(1.045);
 }
 
 .noPoster {
-    display: grid;
+    @include flex-center;
+
     width: 100%;
     height: 100%;
-    place-items: center;
-    padding: 18px;
-    background: linear-gradient(145deg, #d8e2ea, #f4f7fa);
-    color: #5d6b78;
-    font-size: 14px;
-    font-weight: 700;
+    padding: 16px;
+    color: var(--color-gray-60);
     text-align: center;
-}
-
-.rating {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    min-width: 40px;
-    border-radius: 999px;
-    background: rgba(3, 37, 65, 0.88);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 5px 8px;
-    text-align: center;
+    background:
+        linear-gradient(135deg, rgb(229 0 0 / 0.18), transparent),
+        var(--color-black-08);
 }
 
 .favoriteButton {
     position: absolute;
-    right: 10px;
     top: 10px;
-    z-index: 2;
+    right: 10px;
+}
+
+.favoriteActive {
+    background-color: var(--color-red-45);
+    border-color: var(--color-red-45);
+}
+
+.body {
     display: grid;
-    width: 38px;
-    height: 38px;
-    place-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 999px;
-    background: rgba(3, 37, 65, 0.78);
-    color: #fff;
-    cursor: pointer;
-    font-size: 22px;
-    line-height: 1;
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-.favoriteButton:hover {
-    background: rgba(1, 180, 228, 0.9);
-    transform: translateY(-1px);
-}
-
-.favoriteButton:focus-visible {
-    box-shadow: 0 0 0 3px rgba(144, 206, 161, 0.45);
-}
-
-.info {
-    display: flex;
-    min-height: 54px;
-    flex-direction: column;
-    gap: 4px;
+    flex-grow: 1;
+    align-content: space-between;
+    row-gap: 12px;
 }
 
 .title {
     display: -webkit-box;
+    min-height: 2.4em;
     overflow: hidden;
-    color: #12263a;
-    font-size: 15px;
-    font-weight: 800;
-    line-height: 1.25;
+    color: var(--color-white);
+    font-size: fluid-to-laptop(18, 16);
+    font-weight: 600;
+    line-height: 1.2;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
 
 .meta {
-    color: #617587;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: start;
+    gap: 8px;
+}
+
+.ratingBadge {
+    width: 100%;
+    max-width: 100%;
+    justify-content: start;
+}
+
+@include mobile-s {
+    .card {
+        padding: 10px;
+    }
+
+    .title {
+        min-height: auto;
+        font-size: 14px;
+    }
+
+    .favoriteButton {
+        top: 8px;
+        right: 8px;
+    }
 }

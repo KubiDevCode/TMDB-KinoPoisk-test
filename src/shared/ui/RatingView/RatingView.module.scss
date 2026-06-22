@@ -1,0 +1,40 @@
+.ratingView {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    column-gap: 4px;
+}
+
+.stars {
+    position: relative;
+    width: clamp(70px, 7vw, 98px);
+    aspect-ratio: 98 / 18;
+    flex: 0 1 auto;
+    min-width: 58px;
+}
+
+.unfilled,
+.filled {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.filled {
+    @include abs-cover;
+
+    clip-path: polygon(
+        0 0,
+        calc(100% / 5 * var(--rating-view-value)) 0,
+        calc(100% / 5 * var(--rating-view-value)) 100%,
+        0 100%
+    );
+}
+
+.label {
+    min-width: 0;
+    color: var(--color-gray-75);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+}

@@ -1,0 +1,39 @@
+.badge {
+    @include flex-center(true);
+
+    min-width: 0;
+    column-gap: 4px;
+    padding: 6px 10px;
+    color: var(--color-gray-60);
+    font-size: fluid-to-laptop(14, 12);
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    background-color: var(--color-black-08);
+    border: var(--border);
+    border-radius: 50px;
+    overflow: hidden;
+
+    > span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.accent {
+    color: var(--color-white);
+    background-color: var(--color-red-45);
+    border: none;
+    border-radius: var(--border-radius-xxs);
+}
+
+.big {
+    padding: fluid-to-laptop(10, 8);
+    font-size: fluid-to-laptop(16, 12);
+    font-weight: 600;
+}
+
+.icon {
+    --icon-size: #{fluid-to-laptop(24, 20)};
+}

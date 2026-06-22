@@ -1,0 +1,67 @@
+.slider {
+    position: relative;
+    min-width: 0;
+}
+
+.swiper {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.item {
+    height: auto;
+    display: flex;
+
+    > * {
+        width: 100%;
+    }
+}
+
+.autoWidth {
+    .item {
+        width: auto;
+
+        > * {
+            width: auto;
+        }
+    }
+}
+
+.navigation {
+    width: max-content;
+    max-width: 100%;
+    margin-top: fluid(40, 24);
+    margin-inline: auto;
+    justify-content: center;
+}
+
+.scrollbar {
+    @include abs-x;
+
+    top: calc(100% + 24px);
+    width: 80px;
+    height: 5px;
+    background-color: var(--color-black-20);
+    border-radius: 20px;
+}
+
+.scrollbarDrag {
+    height: 100%;
+    background-color: var(--color-red-45);
+    border-radius: inherit;
+}
+
+.paginationBullet {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 4px;
+    background-color: var(--color-black-20);
+    border-radius: 100px;
+    transition-duration: var(--transition-duration);
+}
+
+.active {
+    width: 23px;
+    background-color: var(--color-red-45);
+}

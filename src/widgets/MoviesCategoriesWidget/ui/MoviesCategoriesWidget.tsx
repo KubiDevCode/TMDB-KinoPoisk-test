@@ -1,52 +1,64 @@
-import s from "./MoviesCategoriesWidget.module.scss";
-import classNames from "classnames";
-import { Button } from "../../../shared/ui/Button/Button";
-import { MoviesGrid } from "../../../entities/movie/index";
-import type { MovieCardModel, MovieSectionModel } from "../../../entities/movie/model/types/movieTypes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+import { MovieCard } from '../../../entities/movie'
+import type { MovieCardModel, MovieSectionModel } from '../../../entities/movie/model/types/movieTypes'
+import { Button } from '../../../shared/ui/Button/Button'
+import { Section } from '../../../shared/ui/Section/Section'
+import { Slider } from '../../../shared/ui/Slider/Slider'
+import s from './MoviesCategoriesWidget.module.scss'
 
 interface MoviesCategoriesWidgetProps {
-    sections?: MovieSectionModel[];
-    cardView?: number;
-    onToggleFavorite: (movie: MovieCardModel) => void;
+    sections?: MovieSectionModel[]
+    cardView?: number
+    onToggleFavorite: (movie: MovieCardModel) => void
     hasButton?: boolean
 }
 
 export const MoviesCategoriesWidget = (props: MoviesCategoriesWidgetProps) => {
     const {
         sections,
-        cardView = 7,
+        cardView = 10,
         onToggleFavorite,
         hasButton = true,
-    } = props;
+    } = props
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const handleViewMoreClick = (category: string) => () => {
-        navigate(`/movies/${category}`);
+        navigate(`/movies/${category}`)
     }
 
     return (
-        <div className={classNames(s.widget, 'container')}>
+        <div className={s.widget}>
             {sections?.map((section) => (
-                <section key={section.category} className={s.section}>
-                    <div className={s.sectionHeader}>
-                        <h2 className={s.title}>{section.title}</h2>
-                        {hasButton ? <Button
-                            variant="outlined"
+                <Section
+                    key={section.category}
+                    title={section.title}
+                    titleId={`${section.category}-movies-title`}
+                    actions={hasButton ? (
+                        <Button
+                            mode="black-10"
+                            iconName="arrow-right"
+                            iconPosition="after"
                             onClick={handleViewMoreClick(section.category)}
                         >
                             View More
-                        </Button> : null}
-                    </div>
-
-                    <MoviesGrid
-                        movies={section.movies.slice(0, cardView)}
-                        onToggleFavorite={onToggleFavorite}
-                        className={s.moviesGrid}
-                    />
-                </section>
+                        </Button>
+                    ) : null}
+                    isActionsHiddenOnMobile
+                >
+                    <Slider navigationMode="tile">
+                        {section.movies.slice(0, cardView).map((movie) => (
+                            <MovieCard
+                                key={movie.id}
+                                movie={movie}
+                                onClick={() => navigate(`/movie/${movie.id}`)}
+                                onToggleFavorite={onToggleFavorite}
+                            />
+                        ))}
+                    </Slider>
+                </Section>
             ))}
         </div>
-    );
-};
+    )
+}
+

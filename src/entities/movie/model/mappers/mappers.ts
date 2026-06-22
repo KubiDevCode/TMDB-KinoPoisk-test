@@ -6,7 +6,9 @@ import type {
     MovieCardModel,
 } from '../types/movieTypes'
 
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p'
+const IMAGE_BASE_URL = import.meta.env.DEV
+    ? '/tmdb-image/t/p'
+    : 'https://image.tmdb.org/t/p'
 
 type ImageSize = 'w300' | 'w500' | 'w780' | 'original'
 

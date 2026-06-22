@@ -7,44 +7,38 @@
 }
 
 .button {
-    display: inline-flex;
-    min-width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(3, 37, 65, 0.14);
-    border-radius: 8px;
-    background: #fff;
-    color: #032541;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 900;
+    @include flex-center(true);
+
+    min-width: 44px;
+    height: 44px;
     padding: 0 12px;
-}
+    color: var(--color-white);
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-s);
+    cursor: pointer;
 
-.button:hover:not(:disabled) {
-    border-color: #01b4e4;
-}
+    @include hover {
+        border-color: var(--color-red-45);
+        background-color: var(--color-black-12);
+    }
 
-.button:disabled {
-    cursor: not-allowed;
-    opacity: 0.45;
-}
-
-.button:focus-visible {
-    outline: 3px solid rgba(1, 180, 228, 0.35);
-    outline-offset: 2px;
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.45;
+    }
 }
 
 .active {
-    border-color: #01b4e4;
-    background: #01b4e4;
-    color: #fff;
+    border-color: var(--color-red-45);
+    background: var(--color-red-45);
 }
 
 .ellipsis {
     min-width: 24px;
-    color: #536b7d;
+    color: var(--color-gray-60);
     font-weight: 900;
     text-align: center;
 }
@@ -54,3 +48,4 @@
     gap: 8px;
     align-items: center;
 }
+

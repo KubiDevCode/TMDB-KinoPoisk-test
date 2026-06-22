@@ -17,9 +17,6 @@ body,
 }
 
 body {
-    font-family: 'Montserrat', Arial, sans-serif;
-    background: #f4f7fa;
-    color: #12263a;
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
 }
@@ -48,28 +45,4 @@ button {
 img,
 svg {
     display: block;
-}
-
-@font-face {
-    font-family: 'Montserrat';
-    src: url('./fonts/Montserrat-Regular.ttf') format('truetype');
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Montserrat';
-    src: url('./fonts/Montserrat-SemiBold.ttf') format('truetype');
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Montserrat';
-    src: url('./fonts/Montserrat-Bold.ttf') format('truetype');
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
 }

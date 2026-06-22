@@ -1,39 +1,101 @@
 .footer {
-    margin-top: auto;
-    border-top: 1px solid rgba(3, 37, 65, 0.08);
-    background: #fff;
+    flex: 0 0 auto;
+    background-color: var(--color-black-06);
 }
 
-.container {
+.inner {
+    width: 100%;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+    padding-inline: var(--container-padding-x);
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 30px fluid(30, 10);
+    padding-block: fluid(100, 50);
+    border-bottom: var(--border);
+
+    @include laptop {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mobile {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile-s {
+        grid-template-columns: 1fr;
+    }
+}
+
+.column {
     display: flex;
-    width: min(100% - 32px, 1360px);
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin: 0 auto;
-    padding: 20px 0;
+    flex-direction: column;
+    align-items: start;
+    row-gap: fluid(24, 16);
 }
 
-.text {
-    color: #536b7d;
-    font-size: 14px;
+.title {
+    color: var(--color-white);
+    font-size: fluid-to-laptop(20, 16);
     font-weight: 600;
 }
 
-.link {
-    color: #01b4e4;
-    font-size: 14px;
-    font-weight: 900;
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    row-gap: fluid(14, 8);
 }
 
-.link:hover {
-    text-decoration: underline;
+.link,
+.extraLink {
+    overflow-wrap: anywhere;
+    color: var(--color-gray-60);
+    font-weight: 500;
 }
 
-@media (max-width: 640px) {
-    .container {
-        width: min(100% - 24px, 1360px);
-        align-items: flex-start;
-        flex-direction: column;
+.socials {
+    display: flex;
+    gap: 10px;
+}
+
+.socialLink {
+    @include flex-center;
+    @include square(fluid-to-laptop(56, 44));
+
+    background-color: var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-s);
+
+    @include hover {
+        background-color: var(--color-red-45);
     }
+}
+
+.extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 16px;
+    padding-top: fluid-to-laptop(24, 20);
+    padding-bottom: fluid(50, 20);
+
+    @include mobile {
+        flex-direction: column;
+        row-gap: 20px;
+        align-items: start;
+    }
+}
+
+.copyright {
+    font-weight: 500;
+}
+
+.extraLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
 }

@@ -1,4 +1,8 @@
+import classNames from 'classnames'
 import type { KeyboardEvent, MouseEvent } from 'react'
+import { Badge } from '../../../shared/ui/Badge/Badge'
+import { Button } from '../../../shared/ui/Button/Button'
+import { RatingView } from '../../../shared/ui/RatingView/RatingView'
 import type { MovieCardModel } from '../model/types/movieTypes'
 import s from './MovieCard.module.scss'
 
@@ -18,7 +22,7 @@ export const MovieCard = ({ movie, onClick, onToggleFavorite }: MovieCardProps) 
         onToggleFavorite(movie)
     }
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
         if (!onClick) {
             return
         }
@@ -36,6 +40,7 @@ export const MovieCard = ({ movie, onClick, onToggleFavorite }: MovieCardProps) 
             onKeyDown={handleKeyDown}
             role={onClick ? 'button' : undefined}
             tabIndex={onClick ? 0 : undefined}
+            aria-label={onClick ? `Open ${movie.title}` : undefined}
         >
             <div className={s.imageWrapper}>
                 {movie.posterPath ? (
@@ -49,30 +54,34 @@ export const MovieCard = ({ movie, onClick, onToggleFavorite }: MovieCardProps) 
                     <div className={s.noPoster}>No poster</div>
                 )}
 
-                <button
-                    type="button"
-                    className={s.favoriteButton}
-                    onClick={handleFavoriteClick}
-                    aria-label={
+                <Button
+                    className={classNames(s.favoriteButton, movie.isFavorite && s.favoriteActive)}
+                    mode="black-06"
+                    iconName={movie.isFavorite ? 'like' : 'plus'}
+                    label={
                         movie.isFavorite
                             ? `Remove ${movie.title} from favorites`
                             : `Add ${movie.title} to favorites`
                     }
-                >
-                    {movie.isFavorite ? '♥' : '♡'}
-                </button>
-
-                {rating !== null && (
-                    <div className={s.rating}>{rating.toFixed(1)}</div>
-                )}
+                    isLabelHidden
+                    onClick={handleFavoriteClick}
+                />
             </div>
 
-            <div className={s.info}>
+            <div className={s.body}>
                 <h3 className={s.title}>{movie.title}</h3>
-                {movie.releaseYear && (
-                    <p className={s.meta}>{movie.releaseYear}</p>
-                )}
+                <div className={s.meta}>
+                    {movie.releaseYear && (
+                        <Badge iconName="calendar">{movie.releaseYear}</Badge>
+                    )}
+                    {rating !== null && (
+                        <Badge className={s.ratingBadge}>
+                            <RatingView value={rating / 2} label={rating.toFixed(1)} />
+                        </Badge>
+                    )}
+                </div>
             </div>
         </article>
     )
 }
+

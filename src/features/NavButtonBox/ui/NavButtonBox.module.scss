@@ -1,55 +1,33 @@
 .navItem {
-    display: flex;
-    align-items: center;
+    flex: 0 0 auto;
 }
 
 .link {
     display: inline-flex;
-    min-height: 38px;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1;
-    padding: 0 14px;
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-    white-space: nowrap;
+    min-height: 44px;
+    padding: 0 fluid-to-laptop(20, 14);
+    color: var(--color-gray-75);
+    font-weight: 600;
+    background-color: var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-s);
+
+    @include hover {
+        color: var(--color-white);
+        border-color: var(--color-red-45);
+    }
 }
 
-.dark {
-    color: rgba(255, 255, 255, 0.86);
-}
-
+.dark,
 .light {
-    border-color: rgba(3, 37, 65, 0.14);
-    color: #032541;
-}
-
-.link:hover {
-    border-color: rgba(144, 206, 161, 0.65);
-    background: rgba(1, 180, 228, 0.08);
-}
-
-.dark:hover {
-    color: #fff;
-}
-
-.light:hover {
-    color: #032541;
-}
-
-.link:focus-visible {
-    outline: 3px solid rgba(1, 180, 228, 0.4);
-    outline-offset: 2px;
+    color: var(--color-gray-75);
 }
 
 .active {
-    border-color: #90cea1;
-    background: #90cea1;
-    color: #032541;
+    color: var(--color-white);
+    background-color: var(--color-red-45);
+    border-color: var(--color-red-45);
+    pointer-events: none;
 }

@@ -1,172 +1,115 @@
 .page {
-    position: relative;
-    width: min(100% - 32px, 1360px);
-    min-height: 100vh;
-    margin: 0 auto;
-    padding: 32px 0 64px;
+    display: grid;
+    row-gap: fluid(42, 28);
+    width: 100%;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+    padding: fluid(56, 32) var(--container-padding-x) var(--section-padding-y);
 }
 
 .progress {
-    position: sticky;
-    top: 80px;
-    z-index: 30;
-    height: 4px;
-    margin-bottom: 16px;
-    overflow: hidden;
-    border-radius: 999px;
-    background: rgba(3, 37, 65, 0.08);
-}
-
-.progress::after {
-    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 110;
     width: 35%;
-    height: 100%;
-    border-radius: inherit;
-    animation: loadingBar 1.2s infinite ease-in-out;
-    background: #01b4e4;
-    content: '';
+    height: 3px;
+    background-color: var(--color-red-45);
+    animation: progress 1s ease-in-out infinite alternate;
 }
 
 .hero {
-    margin-bottom: 32px;
-    padding: 36px;
-    border: 1px solid rgba(3, 37, 65, 0.08);
-    border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 16px 36px rgba(3, 37, 65, 0.08);
+    padding: fluid(50, 28);
+    background:
+        linear-gradient(135deg, rgb(229 0 0 / 0.18), transparent 48%),
+        var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-l);
 }
 
 .heroContent {
-    max-width: 820px;
+    display: grid;
+    max-width: 860px;
+    row-gap: 14px;
 }
 
 .kicker {
-    margin: 0 0 8px;
-    color: #01b4e4;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 0;
+    color: var(--color-red-80);
+    font-weight: 700;
     text-transform: uppercase;
 }
 
 .title {
-    margin: 0 0 12px;
-    color: #032541;
-    font-size: 40px;
-    font-weight: 900;
-    line-height: 1.08;
+    margin: 0;
 }
 
 .subtitle {
-    max-width: 720px;
-    margin: 0 0 24px;
-    color: #536b7d;
-    font-size: 17px;
-    line-height: 1.55;
+    color: var(--color-gray-75);
 }
 
 .statusBox {
     display: grid;
-    min-height: 300px;
-    place-items: center;
-    padding: 32px;
-    border: 1px solid rgba(3, 37, 65, 0.08);
-    border-radius: 8px;
-    background: #fff;
+    row-gap: 10px;
+    padding: fluid(40, 24);
     text-align: center;
+    background-color: var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-l);
 }
 
-.statusTitle {
-    margin: 0 0 12px;
-    color: #032541;
-    font-size: 28px;
-    font-weight: 900;
-}
-
-.statusText {
-    max-width: 640px;
+.statusTitle,
+.resultsTitle {
     margin: 0;
-    color: #5d6f7f;
-    font-size: 17px;
-    line-height: 1.5;
+    font-size: fluid(28, 20);
+}
+
+.statusText,
+.resultsInfo {
+    color: var(--color-gray-75);
+}
+
+.resultsInfo span {
+    color: var(--color-white);
 }
 
 .resultsHeader {
     display: flex;
-    gap: 16px;
-    align-items: flex-end;
+    align-items: end;
     justify-content: space-between;
-    margin-bottom: 24px;
-}
+    gap: 16px;
 
-.resultsTitle {
-    margin: 0 0 8px;
-    color: #032541;
-    font-size: 28px;
-    font-weight: 900;
-}
-
-.resultsInfo {
-    margin: 0;
-    color: #536b7d;
-    font-size: 16px;
-}
-
-.resultsInfo span {
-    color: #032541;
-    font-weight: 800;
+    @include mobile {
+        flex-direction: column;
+        align-items: start;
+    }
 }
 
 .counter {
-    border-radius: 999px;
-    background: #e8f7fb;
-    color: #032541;
-    font-size: 14px;
-    font-weight: 800;
+    flex: 0 0 auto;
     padding: 10px 14px;
-    white-space: nowrap;
+    color: var(--color-white);
+    font-weight: 700;
+    background-color: var(--color-black-10);
+    border: var(--border);
+    border-radius: 50px;
 }
 
 .moviesGrid {
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    min-width: 0;
 }
 
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
 }
 
-@keyframes loadingBar {
-    0% {
-        transform: translateX(-100%);
+@keyframes progress {
+    from {
+        transform: translateX(-40%);
     }
 
-    50% {
-        transform: translateX(120%);
-    }
-
-    100% {
-        transform: translateX(320%);
+    to {
+        transform: translateX(260%);
     }
 }
 
-@media (max-width: 720px) {
-    .page {
-        width: min(100% - 24px, 1360px);
-        padding-top: 20px;
-    }
-
-    .hero {
-        padding: 24px;
-    }
-
-    .title {
-        font-size: 32px;
-    }
-
-    .resultsHeader {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}

@@ -1,0 +1,40 @@
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.tile {
+    column-gap: fluid-to-laptop(16, 12);
+    padding: fluid-to-laptop(16, 12);
+    background-color: var(--color-black-06);
+    border: var(--border);
+    border-radius: var(--border-radius-l);
+}
+
+.rounded {
+    column-gap: fluid-to-laptop(10, 8);
+
+    .arrowButton {
+        border-radius: 50%;
+    }
+}
+
+.absBottom {
+    position: absolute;
+    z-index: 1;
+    inset-inline: fluid-to-laptop(50, 40);
+    bottom: fluid-to-laptop(20, 16);
+}
+
+.arrowButton {
+    flex: 0 0 auto;
+}
+
+.pagination {
+    display: flex;
+    min-width: 0;
+    flex: 0 1 auto;
+    column-gap: 3px;
+}

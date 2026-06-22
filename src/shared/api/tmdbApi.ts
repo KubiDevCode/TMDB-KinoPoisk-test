@@ -8,12 +8,15 @@ import type {
 } from '../../entities/movie/model/types/movieTypes'
 
 const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN
+const TMDB_API_BASE_URL = import.meta.env.DEV
+    ? '/tmdb-api/3/'
+    : 'https://api.themoviedb.org/3/'
 const DEFAULT_LANGUAGE = 'en-US'
 
 export const tmdbApi = createApi({
     reducerPath: 'tmdbApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://api.themoviedb.org/3/',
+        baseUrl: TMDB_API_BASE_URL,
         prepareHeaders: (headers) => {
             if (TMDB_ACCESS_TOKEN) {
                 headers.set('Authorization', `Bearer ${TMDB_ACCESS_TOKEN}`)

@@ -1,25 +1,21 @@
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: fluid(24, 16);
 }
 
 .empty {
-    display: grid;
-    min-height: 260px;
-    place-items: center;
-    border: 1px solid rgba(3, 37, 65, 0.08);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.72);
-    color: #536b7d;
-    font-size: 17px;
-    font-weight: 700;
+    padding: fluid(40, 24);
+    color: var(--color-gray-75);
+    font-weight: 600;
     text-align: center;
+    background-color: var(--color-black-10);
+    border: var(--border);
+    border-radius: var(--border-radius-l);
 }
 
-@media (max-width: 640px) {
+@include mobile {
     .grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
     }
 }

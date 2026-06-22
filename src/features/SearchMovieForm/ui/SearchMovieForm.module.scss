@@ -1,27 +1,19 @@
 .form {
-    display: grid;
-    width: min(100%, 720px);
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
+    display: flex;
     align-items: stretch;
+    gap: 10px;
+    width: 100%;
+
+    @include mobile-s {
+        flex-direction: column;
+    }
 }
 
 .input {
-    background: rgba(255, 255, 255, 0.92);
-    border-radius: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .button {
-    min-width: 132px;
-    white-space: nowrap;
-}
-
-@media (max-width: 560px) {
-    .form {
-        grid-template-columns: 1fr;
-    }
-
-    .button {
-        min-width: 0;
-    }
+    flex: 0 0 auto;
 }
