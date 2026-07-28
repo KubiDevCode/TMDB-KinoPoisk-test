@@ -1,40 +1,157 @@
-# Movie Explorer
+# StreamVibe / TMDB Movie Explorer
 
-React + TypeScript + Vite application for browsing TMDB movies.
+Веб-приложение для просмотра фильмов из каталога TMDB. Проект сделан как полноценный React-интерфейс: главная страница с подборками, поиск по названию, фильтрация каталога, страницы категорий, детальная страница фильма и локальное избранное.
 
-## Features
+Проект можно презентовать как пример современной SPA на React, TypeScript и RTK Query с реальным внешним API, продуманной маршрутизацией и компонентной архитектурой.
 
-- Popular, top rated, upcoming and now playing movie categories.
-- Search by movie title with pagination and URL query state.
-- Discover page with genre, rating and sort filters.
-- Local favorites stored in the browser.
-- Typed RTK Query API layer and reusable movie card/grid components.
+## Демо-сценарий для презентации
 
-## Setup
+1. Открыть главную страницу и показать hero-блок с фильмом из TMDB.
+2. Пролистать подборки: Popular, Top Rated, Upcoming, Now Playing.
+3. Перейти в раздел Movies и показать пагинацию внутри категории.
+4. Открыть Discover и отфильтровать фильмы по жанрам, рейтингу и сортировке.
+5. Найти фильм через Search, показать сохранение поискового запроса и страницы в URL.
+6. Открыть карточку фильма и показать описание, рейтинг, жанры, режиссёра, актёров и похожие фильмы.
+7. Добавить несколько фильмов в Favorites и показать, что избранное хранится локально в браузере.
 
-1. Create `.env.local` in the project root.
-2. Copy values from `.env.example`.
-3. Put your TMDB API Read Access Token into `VITE_TMDB_ACCESS_TOKEN`.
+## Основные возможности
+
+- Получение данных из TMDB API через RTK Query.
+- Главная страница с несколькими независимыми подборками фильмов.
+- Категории фильмов: popular, top rated, upcoming, now playing.
+- Поиск фильмов по названию с пагинацией и URL query-параметрами.
+- Discover-страница с фильтрами по жанрам, рейтингу и сортировке.
+- Детальная страница фильма с актёрским составом, режиссёром и похожими фильмами.
+- Добавление фильмов в избранное через `localStorage`.
+- Скелетоны загрузки, глобальный индикатор запросов и обработка ошибок API.
+- Адаптивная вёрстка на SCSS Modules.
+- SPA-роутинг с поддержкой деплоя на Vercel.
+
+## Технологии
+
+- React 19
+- TypeScript
+- Vite
+- React Router
+- Redux Toolkit и RTK Query
+- SCSS Modules
+- Swiper
+- Vite SVGR
+- ESLint
+
+## Архитектура
+
+Проект организован по слоям, близким к Feature-Sliced Design:
+
+```text
+src/
+  app/        глобальные стили, роутер, store, провайдеры
+  pages/      страницы приложения
+  widgets/    крупные интерфейсные блоки: Header, Footer, Welcome, подборки
+  features/   пользовательские действия: поиск, навигационные кнопки
+  entities/   movie-модель, типы, мапперы и UI карточек
+  shared/     API, хуки, конфиги, общие UI-компоненты и ассеты
+```
+
+Такое разделение помогает не смешивать бизнес-логику, страницы и переиспользуемый UI.
+
+## Маршруты
+
+| Маршрут | Назначение |
+| --- | --- |
+| `/` | Главная страница с подборками фильмов |
+| `/movies/:category` | Страница категории: popular, top-rated, upcoming, now-playing |
+| `/filtered-movies` | Discover-страница с фильтрами |
+| `/search` | Поиск фильмов |
+| `/movie/:id` | Детальная страница фильма |
+| `/favorites` | Локальная коллекция избранного |
+| `*` | Страница 404 |
+
+## Работа с TMDB API
+
+API-слой находится в `src/shared/api/tmdbApi.ts`. Для запросов используется `createApi` из Redux Toolkit Query.
+
+В dev-режиме запросы идут через Vite proxy:
+
+- `/tmdb-api` -> `https://api.themoviedb.org`
+- `/tmdb-image` -> `https://image.tmdb.org`
+
+Это упрощает локальную разработку и централизует работу с TMDB.
+
+## Быстрый старт
+
+### Требования
+
+- Node.js 20+
+- npm
+- TMDB API Read Access Token
+
+### Установка
 
 ```bash
 npm install
-npm run dev
 ```
 
-## Scripts
+### Переменные окружения
+
+Создайте файл `.env.local` в корне проекта и добавьте токен TMDB:
+
+```env
+VITE_TMDB_ACCESS_TOKEN=your_tmdb_read_access_token
+```
+
+В репозитории есть пример:
+
+```bash
+.env.example
+```
+
+### Запуск в режиме разработки
 
 ```bash
 npm run dev
-npm run build
-npm run lint
-npm run preview
 ```
 
-## Structure
+После запуска Vite покажет локальный адрес приложения в терминале.
 
-- `src/app` - providers, router, store and global styles.
-- `src/pages` - route-level pages.
-- `src/widgets` - layout sections such as header, footer and welcome banner.
-- `src/features` - user actions such as search and navigation buttons.
-- `src/entities/movie` - movie types, mappers and reusable movie UI.
-- `src/shared` - API, hooks, config and generic UI.
+## Скрипты
+
+```bash
+npm run dev      # запуск dev-сервера
+npm run build    # production-сборка
+npm run lint     # проверка ESLint
+npm run preview  # локальный preview production-сборки
+```
+
+## Сборка и деплой
+
+Production-сборка создаётся командой:
+
+```bash
+npm run build
+```
+
+Проект подготовлен для деплоя SPA на Vercel. В `vercel.json` настроен rewrite всех маршрутов на `index.html`, чтобы прямое открытие страниц вроде `/movie/123` или `/favorites` работало корректно.
+
+Для деплоя нужно добавить переменную окружения `VITE_TMDB_ACCESS_TOKEN` в настройках проекта на Vercel.
+
+## Что важно отметить при защите проекта
+
+- Используется реальное внешнее API, а не моковые данные.
+- Состояние запросов, кэширование и loading/error-состояния вынесены в RTK Query.
+- Фильтры, поиск и пагинация синхронизированы с URL, поэтому страницами можно делиться.
+- Избранное работает без backend через `localStorage` и синхронизируется в интерфейсе.
+- Страницы разделены по назначению, а общие компоненты вынесены в `shared`.
+- Приложение не привязано к одной странице: есть полноценная навигация, detail view и 404.
+
+## Возможные улучшения
+
+- Добавить авторизацию пользователя и хранение избранного на backend.
+- Добавить тесты для мапперов, хуков и пользовательских сценариев.
+- Добавить страницу трейлеров и видео из TMDB.
+- Добавить переключение языка интерфейса.
+- Добавить skeleton/detail placeholders для отдельных блоков страницы фильма.
+
+## Attribution
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
